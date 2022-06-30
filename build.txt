@@ -1,0 +1,3 @@
+displayName = Vanity Bakery
+author = LilacIsle
+version = 0.1

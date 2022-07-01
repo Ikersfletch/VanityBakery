@@ -7,6 +7,8 @@ using Terraria.GameContent.UI.States;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.Audio;
+using Terraria.ID;
 using OnUICharacterList = On.Terraria.GameContent.UI.Elements.UICharacterListItem;
 namespace VanityBakery
 {
@@ -15,6 +17,10 @@ namespace VanityBakery
         public override void Load()
         {
            OnUICharacterList.ctor += CreateButton;
+        }
+        public override void Unload()
+        {
+            OnUICharacterList.ctor -= CreateButton;
         }
 
         public static Player AppearanceCopied = null;
@@ -70,7 +76,7 @@ namespace VanityBakery
 
         public void BakeCurrentAppearance(UIMouseEvent evt, UIElement listening)
         {
-
+            SoundEngine.PlaySound(SoundID.ResearchComplete);
             UICharacterListItem parent = listening.Parent as UICharacterListItem;
             PlayerFileData filedata = (PlayerFileData)parent.GetType().GetField("_data", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(parent);
             BakedVanityData.BakeVanities(AppearanceCopied, filedata.Player);

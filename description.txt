@@ -1,1 +1,14 @@
-Vanity Bakery is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Vanity Bakery allows you to bake the appearance of a pre-existing character onto another character.
+
+It doesn't alter any characters' inventories, and is purely visual.
+
+Notes:
+ - Baked appearances stack; if you bake an appearance to a character, then change how they look in-game, you can bake the complete vanity, even the parts which were already baked!
+ - Baked vanities have lower priority than any other armor or equipment. Hiding accessories or using the familiar set will show off that baked vanity.
+ - Baked vanities don't save on the player select screen, rather they save with the player data. If you want to quickly save an appearance, entering and exiting a world will save the character.
+ - Miscellaneous dyes do not bake- these are the dyes for Minecarts, Hooks, Pets, and Mounts.
+ - While dyes do bake into the appearance, the pet dye slot does not, so Yoraz0r's eye only bakes its brightness, and not its color.
+ - Critter Shampoo does not bake if in a functional slot while hidden
+ - Dyes which affect the appearance of strictly non-social accessories don't bake. (e.g., dyeing a stepstool won't bake the dye, dyeing a flying carpet won't bake the dye)
+ - All items in vanilla equipment slots are baked, regardless if the item is modded. 
+ - No items in modded equipment slots are baked, regardless if the item is modded.

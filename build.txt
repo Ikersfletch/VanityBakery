@@ -2,3 +2,4 @@ displayName = Vanity Bakery
 author = LilacIsle
 version = 0.1
 includeSource = true
+homepage = https://github.com/Ikersfletch/VanityBakery

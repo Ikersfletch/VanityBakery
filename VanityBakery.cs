@@ -8,14 +8,26 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.Audio;
+using ReLogic.Content;
 using Terraria.ID;
 using OnUICharacterList = On.Terraria.GameContent.UI.Elements.UICharacterListItem;
 namespace VanityBakery
 {
 	public class VanityBakery : Mod
 	{
+        private Asset<Texture2D> CopyTex;
+
+        private Asset<Texture2D> BakeTex;
+
+        private Asset<Texture2D> ClearTex;
+
         public override void Load()
         {
+            CopyTex = ModContent.Request<Texture2D>("VanityBakery/Images/Copy", AssetRequestMode.ImmediateLoad);
+            BakeTex = ModContent.Request<Texture2D>("VanityBakery/Images/Bake", AssetRequestMode.ImmediateLoad);
+            ClearTex = ModContent.Request<Texture2D>("VanityBakery/Images/Clear", AssetRequestMode.ImmediateLoad);
+
+
            OnUICharacterList.ctor += CreateButton;
         }
         public override void Unload()
@@ -27,46 +39,47 @@ namespace VanityBakery
 
         public void CreateButton(OnUICharacterList.orig_ctor orig, UICharacterListItem self, PlayerFileData data, int snapPointIndex)
         {
-            orig(self, data, snapPointIndex);
 
-            UIImageButton CopyAppearance = new UIImageButton(ModContent.Request<Texture2D>("VanityBakery/Images/Copy"))
+            UIImageButton CopyAppearance = new UIImageButton(CopyTex)
             {
-                VAlign = 1f,
-                HAlign = .55f,
-                Left = StyleDimension.FromPixelsAndPercent(0, 0f)
+                VAlign = 1.0f,
+                Left= StyleDimension.FromPixelsAndPercent(100, 0f)
             };
             CopyAppearance.SetVisibility(1f, 0.5f);
             CopyAppearance.OnClick += SetCurrentAppearance;
             CopyAppearance.OnMouseOver += DisplayCopyText;
             CopyAppearance.OnMouseOut += RemoveText;
-            UIImageButton BakeAppearance = new UIImageButton(ModContent.Request<Texture2D>("VanityBakery/Images/Bake"))
+            UIImageButton BakeAppearance = new UIImageButton(BakeTex)
             {
-                VAlign = 1f,
-                HAlign = 0.55f,
-                Left = StyleDimension.FromPixelsAndPercent(25, 0f)
+                VAlign = 1.0f,
+                Left = StyleDimension.FromPixelsAndPercent(124, 0f)
             };
             BakeAppearance.SetVisibility(1f, 0.5f);
             BakeAppearance.OnClick += BakeCurrentAppearance;
             BakeAppearance.OnMouseOver += DisplayBakeText;
             BakeAppearance.OnMouseOut += RemoveText;
-            UIImageButton ClearAppearance = new UIImageButton(ModContent.Request<Texture2D>("VanityBakery/Images/Clear"))
+            UIImageButton ClearAppearance = new UIImageButton(ClearTex)
             {
-                VAlign = 1f,
-                HAlign = 0.55f,
-                Left = StyleDimension.FromPixelsAndPercent(50, 0f)
+                VAlign = 1.0f,
+                Left = StyleDimension.FromPixelsAndPercent(148, 0f)
             };
             ClearAppearance.SetVisibility(1f, 0.5f);
             ClearAppearance.OnClick += ClearCurrentAppearance;
             ClearAppearance.OnMouseOver += DisplayClearText;
             ClearAppearance.OnMouseOut += RemoveText;
+
+            orig(self, data, snapPointIndex);
             self.Append(CopyAppearance);
             self.Append(BakeAppearance);
             self.Append(ClearAppearance);
 
+            UIText label = (UIText)self.GetType().GetField("_buttonLabel", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(self);
+            label.Left.Set(180,0f);
         }
 
         public void SetCurrentAppearance(UIMouseEvent evt, UIElement listening)
         {
+            SoundEngine.PlaySound(SoundID.Item166);
             UICharacterListItem parent = listening.Parent as UICharacterListItem;
             PlayerFileData filedata = (PlayerFileData)parent.GetType().GetField("_data", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(parent);
             AppearanceCopied = filedata.Player;
@@ -85,6 +98,7 @@ namespace VanityBakery
         }
         public void ClearCurrentAppearance(UIMouseEvent evt, UIElement listening)
         {
+            SoundEngine.PlaySound(SoundID.Item6);
             UICharacterListItem parent = listening.Parent as UICharacterListItem;
             PlayerFileData filedata = (PlayerFileData)parent.GetType().GetField("_data", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(parent);
             BakedVanityData.ClearVanity(filedata.Player);
